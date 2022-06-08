@@ -2,6 +2,7 @@ const fs = require("fs");
 const inquirer = require("inquirer");
 var role = "manager";
 const allMembers = [];
+const allMembersCard = [];
 
 const addMember = (role) => {
   switch (role) {
@@ -79,7 +80,43 @@ saveResponse = (response, role) => {
   response.role = role;
 };
 
-generateHTML = (allMembers) => {
+const renderMemberCard = (allMembers) => {
+  for (let i = 0; i < allMembers.length; i++) {
+    switch (allMembers[i].role) {
+      case "manager":
+        role = "Manager";
+        info = "Office number: ";
+        break;
+      case "engineer":
+        role = "Engineer";
+        info = "GitHub: ";
+        break;
+      case "intern":
+        role = "Intern";
+        info = "School: ";
+        break;
+    }
+    const memberCard = `
+    <div class="card text-white m-3 lg-3 shadow bg-white" style="width: 18rem">
+      <div class="card-body bg-primary" style="height: 6rem">
+        <h5 class="card-title">${allMembers[i].name}</h5>
+        <h5 class="card-title">${role}</h5>
+      </div>
+      <div class="p-2" style="height: 13rem">
+      <ul class="list-group m-2 text-dark bg-light list-group-flush">
+        <li class="list-group-item">ID: ${allMembers[i].id}</li>
+        <li class="list-group-item">Email: ${allMembers[i].email}</li>
+        <li class="list-group-item">${info}${allMembers[i].info}</li>
+      </ul>
+      </div>
+    </div>
+    `;
+    allMembersCard.push(memberCard);
+  }
+  return allMembersCard.join("");
+};
+
+const generateHTML = (allMembers) => {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -90,25 +127,24 @@ generateHTML = (allMembers) => {
     <title>Team Profile Generator! | Quick access to your employee info</title>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"/>
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+    />
   </head>
   <body class="bg-light">
     <header>
       <div class="jumbotron jumbotron-fluid bg-danger text-white">
         <div class="container">
-          <h1 class="display-4 text-center">My Team!</h1>
-          <p class="lead text-center">
-            Readily displays your team information.
-          </p>
+          <h2 class="display-4 style-bolder text-center">My Team</h2>
         </div>
       </div>
     </header>
-    <main class="container row m-auto d-flex justify-content-around align-items-center">
-            ${renderMemberCard(allMembers)}
+    <main
+      class="container row m-auto d-flex justify-content-around align-items-center memberCard"
+    >${renderMemberCard(allMembers)}
     </main>
   </body>
 </html>
-  `;
+`;
 };
 
 addMember(role);
