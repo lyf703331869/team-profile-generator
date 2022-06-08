@@ -29,6 +29,8 @@
   ## Usage
 
   After install npm, run node index.js, answer few questions. Once finish, you can find a generated html in dist folder.
+  <img width="680" alt="image" src="https://user-images.githubusercontent.com/103960619/172527831-0388f6b4-1246-40c7-a697-e3c04793af11.png">
+
   <img width="1427" alt="image" src="https://user-images.githubusercontent.com/103960619/172527591-635bc383-bed6-4c9d-aa4c-2dd55020bb65.png">
 
 
