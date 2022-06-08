@@ -37,13 +37,13 @@
 
   ## Contributing
 
-  Please check video here[https://www.youtube.com/watch?v=fYWOkRfJQP4] for tutorial.
+  Please check video [here](https://www.youtube.com/watch?v=fYWOkRfJQP4) for tutorial.
   
 
   ## Tests
-
+```
   npm test
-
+```
 
   ## Questions
   
