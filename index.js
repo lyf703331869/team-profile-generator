@@ -5,22 +5,11 @@ const Engineer = require("./lib/engineer");
 const Manager = require("./lib/manager");
 const Intern = require("./lib/intern");
 var role = "manager";
+var info = "office number";
 const allMembers = [];
 const allMembersCard = [];
 
-const addMember = (role) => {
-  switch (role) {
-    case "manager":
-      info = "office number";
-      break;
-    case "engineer":
-      info = "GitHub username";
-      break;
-    case "intern":
-      info = "school";
-      break;
-  }
-
+function start() {
   inquirer
     .prompt([
       {
@@ -43,6 +32,27 @@ const addMember = (role) => {
         name: "info",
         message: `What is the ${role}'s ${info}?`,
       },
+    ])
+    .then((answers) => {
+      const name = answers.name;
+      const id = answers.id;
+      const email = answers.email;
+      const info = answers.info;
+      if (role === "manager") {
+        member = new Manager(name, id, email, info);
+      } else if (role === "engineer") {
+        member = new Engineer(name, id, email, info);
+      } else {
+        member = new Intern(name, id, email, info);
+      }
+      allMembers.push(member);
+      createTeam();
+    });
+}
+
+function createTeam() {
+  inquirer
+    .prompt([
       {
         type: "list",
         name: "member",
@@ -55,63 +65,57 @@ const addMember = (role) => {
         ],
       },
     ])
-    .then((response) => {
-      if (response.member === "Engineer") {
-        saveResponse(response, role);
-
-        role = "engineer";
-        addMember(role);
-      } else if (response.member === "Intern") {
-        saveResponse(response, role);
-        role = "intern";
-        addMember(role);
-      } else {
-        saveResponse(response, role);
-        console.log(allMembers);
-        fs.writeFile("teamProfile.html", generateHTML(allMembers), (err) =>
-          err
-            ? console.error(err)
-            : console.log(
-                "You have successfully generated a team profile html page!"
-              )
-        );
+    .then((userChoice) => {
+      switch (userChoice.member) {
+        case "Engineer":
+          role = "engineer";
+          info = "GitHub username";
+          start();
+          break;
+        case "Intern":
+          role = "intern";
+          info = "school";
+          start();
+          break;
+        default:
+          console.log(allMembers);
+          fs.writeFile("teamProfile.html", generateHTML(allMembers), (err) =>
+            err
+              ? console.error(err)
+              : console.log(
+                  "You have successfully generated a team profile html page!"
+                )
+          );
       }
     });
-};
+}
 
-saveResponse = (response, role) => {
-  delete response.member;
-  allMembers.push(response);
-  response.role = role;
-};
-
-const renderMemberCard = (allMembers) => {
+const generateCard = (allMembers) => {
   for (let i = 0; i < allMembers.length; i++) {
-    switch (allMembers[i].role) {
-      case "manager":
-        role = "Manager";
-        info = "Office number: ";
+    switch (allMembers[i].getRole()) {
+      case "Manager":
+        info = `Office number: ${allMembers[i].officeNumber()}`;
         break;
-      case "engineer":
-        role = "Engineer";
-        info = "GitHub: ";
+      case "Engineer":
+        info = `GitHub: <a href="https://github.com/${allMembers[
+          i
+        ].getGithub()}" target="blank">${allMembers[i].getGithub()}</a>`;
         break;
-      case "intern":
-        role = "Intern";
-        info = "School: ";
+      case "Intern":
+        info = `School: ${allMembers[i].getSchool()}`;
         break;
     }
     const memberCard = `
     <div class="card text-white m-3 lg-3 shadow bg-white" style="width: 18rem">
       <div class="card-body bg-primary" style="height: 6rem">
-        <h5 class="card-title">${allMembers[i].name}</h5>
-        <h5 class="card-title">${role}</h5>
+        <h5 class="card-title">${allMembers[i].getName()}</h5>
+        <h5 class="card-title">${allMembers[i].getRole()}</h5>
       </div>
       <div class="p-2" style="height: 13rem">
       <ul class="list-group m-2 text-dark bg-light list-group-flush">
-        <li class="list-group-item">ID: ${allMembers[i].id}</li>
-        <li class="list-group-item">Email: ${allMembers[i].email}</li>
-        <li class="list-group-item">${info}${allMembers[i].info}</li>
+        <li class="list-group-item">ID: ${allMembers[i].getId()}</li>
+        <li class="list-group-item">Email: ${allMembers[i].getEmail()}</li>
+        <li class="list-group-item">${info}</li>
       </ul>
       </div>
     </div>
@@ -145,11 +149,11 @@ const generateHTML = (allMembers) => {
     </header>
     <main
       class="container row m-auto d-flex justify-content-around align-items-center memberCard"
-    >${renderMemberCard(allMembers)}
+    >${generateCard(allMembers)}
     </main>
   </body>
 </html>
 `;
 };
 
-addMember(role);
+start();
