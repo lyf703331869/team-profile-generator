@@ -8,7 +8,7 @@ describe("Intern", () => {
   });
 
   describe("getSchool", () => {
-    it("should retrieve the school username", () => {
+    it("should retrieve the school name", () => {
       const school = "Columbia";
       const int = new Intern("Yafei", "123", "lyf703331869@gmail.com", school);
 
