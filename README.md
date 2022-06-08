@@ -12,9 +12,7 @@
 
   * [Usage](#usage)
 
-  * [License](#license)
-
-  * [Contributing](#contributing)
+  * [Tutorial](#tutorial)
 
   * [Tests](#tests)
 
@@ -34,10 +32,7 @@
   <img width="1427" alt="image" src="https://user-images.githubusercontent.com/103960619/172527591-635bc383-bed6-4c9d-aa4c-2dd55020bb65.png">
 
 
-  ## License
-
-
-  ## Contributing
+  ## Tutorial
 
   Please check video [here](https://www.youtube.com/watch?v=fYWOkRfJQP4) for tutorial.
   
