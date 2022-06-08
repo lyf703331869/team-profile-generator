@@ -79,12 +79,15 @@ function createTeam() {
           break;
         default:
           console.log(allMembers);
-          fs.writeFile("teamProfile.html", generateHTML(allMembers), (err) =>
-            err
-              ? console.error(err)
-              : console.log(
-                  "You have successfully generated a team profile html page!"
-                )
+          fs.writeFile(
+            "./dist/teamProfile.html",
+            generateHTML(allMembers),
+            (err) =>
+              err
+                ? console.error(err)
+                : console.log(
+                    "You have successfully generated a team profile html page!"
+                  )
           );
       }
     });
@@ -114,7 +117,9 @@ const generateCard = (allMembers) => {
       <div class="p-2" style="height: 13rem">
       <ul class="list-group m-2 text-dark bg-light list-group-flush">
         <li class="list-group-item">ID: ${allMembers[i].getId()}</li>
-        <li class="list-group-item">Email: ${allMembers[i].getEmail()}</li>
+        <li class="list-group-item">Email: <a href = "mailto: ${allMembers[
+          i
+        ].getEmail()}">${allMembers[i].getEmail()}</a></li>
         <li class="list-group-item">${info}</li>
       </ul>
       </div>
