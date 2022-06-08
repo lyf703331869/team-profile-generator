@@ -1,5 +1,9 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
+const Employee = require("./lib/employee");
+const Engineer = require("./lib/engineer");
+const Manager = require("./lib/manager");
+const Intern = require("./lib/intern");
 var role = "manager";
 const allMembers = [];
 const allMembersCard = [];
@@ -54,6 +58,7 @@ const addMember = (role) => {
     .then((response) => {
       if (response.member === "Engineer") {
         saveResponse(response, role);
+
         role = "engineer";
         addMember(role);
       } else if (response.member === "Intern") {
